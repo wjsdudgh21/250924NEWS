@@ -14,8 +14,6 @@
             --text-color: #1f2937; /* 어두운 회색 */
             --card-background: #ffffff;
             --card-border: #e0e0e0;
-            --sidebar-width: 250px;
-            --header-height: 60px;
         }
 
         body {
@@ -24,53 +22,16 @@
             background-color: var(--background-color);
             color: var(--text-color);
             display: flex;
+            justify-content: center; /* Center the main content */
             min-height: 100vh;
             font-size: 17px; /* 기본 폰트 크기 증가 */
         }
 
-        /* Fixed Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--primary-color);
-            color: #FFFFFF; /* 지능형 대비 보장 */
-            padding: 20px 0;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #FFFFFF; /* 지능형 대비 보장 */
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li a {
-            display: block;
-            padding: 15px 20px;
-            color: #FFFFFF; /* 지능형 대비 보장 */
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .sidebar ul li a:hover,
-        .sidebar ul li a.active {
-            background-color: var(--secondary-color);
-        }
-
-        /* Main content area with offset */
+        /* Main content area */
         main {
-            margin-left: var(--sidebar-width); /* 사이드바 너비만큼 왼쪽 마진 */
-            flex-grow: 1;
-            padding: 40px; /* 충분한 padding */
+            padding: 40px;
             box-sizing: border-box;
+            width: 100%;
             max-width: 900px; /* 본문 최대 가로폭 제한 */
         }
 
@@ -98,7 +59,6 @@
 
         section {
             margin-bottom: 60px;
-            scroll-margin-top: 20px; /* Add scroll margin for better positioning */
         }
 
         h2 {
@@ -189,28 +149,8 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: none;
-            }
             main {
-                margin-left: 0;
                 padding: 20px;
-                max-width: 100%; /* 모바일에서는 가로폭 제한 해제 */
-            }
-            .sidebar ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .sidebar ul li a {
-                padding: 10px 15px;
-                white-space: nowrap;
             }
             .hero-section {
                 padding: 40px 20px;
@@ -225,17 +165,6 @@
     </style>
 </head>
 <body>
-    <aside class="sidebar">
-        <h2>순장님 공지</h2>
-        <nav>
-            <ul>
-                <li><a href="#meeting-check" class="active">모임 체크</a></li>
-                <li><a href="#new-believer">태신자 작정</a></li>
-                <li><a href="#party-plan">계획서 제출</a></li>
-                <li><a href="#party-execution">파티 시행</a></li>
-            </ul>
-        </nav>
-    </aside>
 
     <main>
         <div class="hero-section">
@@ -292,11 +221,15 @@
                         <li><i class="fas fa-play"></i> 다락방 대심방을 마친 다락은 행복 파티를 시행하시면 됩니다.</li>
                         <li><i class="fas fa-gift"></i> 지역장님께 말씀드려 방문자 선물을 미리 수령하세요.</li>
                         <li><i class="fas fa-camera"></i> 행복파티 후 인증사진을 잘 남겨 주세요. (아래 기준 참고)</li>
-                        <li><i class="fas fa-video"></i> 복음 영상은 아래 링크를 사용하시면 됩니다:
-                            <ul style="margin-top:10px; padding-left: 20px;">
-                                <li><i class="fab fa-youtube"></i> <a href="https://youtu.be/hch2iS64h7g?si=r8-lNgO-TeSD6DFo" target="_blank">담임목사님 복음 메시지</a></li>
-                                <li><i class="fab fa-youtube"></i> <a href="https://youtu.be/19uJ2XhPKU4?si=EaOwRp_OhhXR2gDt" target="_blank">사영리 샌드아트</a></li>
-                            </ul>
+                        <li>
+                            <i class="fas fa-video"></i>
+                            <div>
+                                <span>복음 영상은 아래 링크를 사용하시면 됩니다:</span>
+                                <ul style="margin-top:10px; padding-left: 0; list-style-type: none;">
+                                    <li style="margin-top: 5px;"><i class="fab fa-youtube"></i> <a href="https://youtu.be/hch2iS64h7g?si=r8-lNgO-TeSD6DFo" target="_blank">담임목사님 복음 메시지</a></li>
+                                    <li><i class="fab fa-youtube"></i> <a href="https://youtu.be/19uJ2XhPKU4?si=EaOwRp_OhhXR2gDt" target="_blank">사영리 샌드아트</a></li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -309,57 +242,7 @@
         </section>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebarLinks = document.querySelectorAll('.sidebar nav ul li a');
-            const sections = document.querySelectorAll('main section');
-
-            // Set active link on scroll
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -50% 0px', // Trigger when section is in the middle of the viewport
-                threshold: 0
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const id = entry.target.id;
-                    const correspondingLink = document.querySelector(`.sidebar nav ul li a[href="#${id}"]`);
-                    if (entry.isIntersecting) {
-                        sidebarLinks.forEach(link => link.classList.remove('active'));
-                        if (correspondingLink) {
-                           correspondingLink.classList.add('active');
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            sections.forEach(section => {
-                if (section) { // Null-Safe DOM Access
-                    observer.observe(section);
-                }
-            });
-
-            // Smooth scroll for sidebar links
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId) {
-                        const targetSection = document.querySelector(targetId);
-                        if (targetSection) { // Null-Safe DOM Access
-                            const offsetTop = targetSection.offsetTop;
-                            window.scrollTo({
-                                top: offsetTop - 20, // Adjust for some spacing from the top
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- Sidebar related script is removed -->
 </body>
 </html>
-
 
