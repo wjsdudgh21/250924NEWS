@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>순장님 공지 대시보드</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/subsets/Paperlogy-dynamic-subset.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8A2BE2; /* 보라 */
+            --secondary-color: #FF1493; /* 핑크 */
+            --background-color: #f8f7f4; /* 밝은 베이지 */
+            --text-color: #1f2937; /* 어두운 회색 */
+            --card-background: #ffffff;
+            --card-border: #e0e0e0;
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        body {
+            font-family: "Paperlogy", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            font-size: 17px; /* 기본 폰트 크기 증가 */
+        }
+
+        /* Fixed Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary-color);
+            color: #FFFFFF; /* 지능형 대비 보장 */
+            padding: 20px 0;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #FFFFFF; /* 지능형 대비 보장 */
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 15px 20px;
+            color: #FFFFFF; /* 지능형 대비 보장 */
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background-color: var(--secondary-color);
+        }
+
+        /* Main content area with offset */
+        main {
+            margin-left: var(--sidebar-width); /* 사이드바 너비만큼 왼쪽 마진 */
+            flex-grow: 1;
+            padding: 40px; /* 충분한 padding */
+            box-sizing: border-box;
+            max-width: 900px; /* 본문 최대 가로폭 제한 */
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #FFFFFF; /* 지능형 대비 보장 */
+            padding: 60px 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .hero-section h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: #FFFFFF; /* 지능형 대비 보장 */
+        }
+
+        .hero-section p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            color: #FFFFFF; /* 지능형 대비 보장 */
+        }
+
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 20px; /* Add scroll margin for better positioning */
+        }
+
+        h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .card-grid-wide-cols {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            border: 1px solid var(--card-border);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            font-size: 1.6em; /* 카드 제목 글씨 크기 증가 */
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+            line-height: 1.7; /* 줄 간격 증가 */
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .card ul li i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            font-size: 1.1em;
+            flex-shrink: 0;
+            padding-top: 3px;
+        }
+
+        .card p {
+            line-height: 1.7; /* 줄 간격 증가 */
+            margin-bottom: 15px;
+        }
+
+        .card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .card a:hover {
+            color: var(--secondary-color);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .card img:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+            }
+            main {
+                margin-left: 0;
+                padding: 20px;
+                max-width: 100%; /* 모바일에서는 가로폭 제한 해제 */
+            }
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .sidebar ul li a {
+                padding: 10px 15px;
+                white-space: nowrap;
+            }
+            .hero-section {
+                padding: 40px 20px;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            .card-grid, .card-grid-wide-cols {
+                grid-template-columns: 1fr; /* 모바일에서 모든 그리드를 1열로 변경 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>순장님 공지</h2>
+        <nav>
+            <ul>
+                <li><a href="#meeting-check" class="active">모임 체크</a></li>
+                <li><a href="#new-believer">태신자 작정</a></li>
+                <li><a href="#party-plan">계획서 제출</a></li>
+                <li><a href="#party-execution">파티 시행</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <div class="hero-section">
+            <h1>순장님들께 드리는 중요 공지</h1>
+            <p>다락방 모임 운영 및 행복파티 진행에 대한 최신 안내입니다.</p>
+        </div>
+
+        <section id="meeting-check">
+            <h2><i class="fas fa-check-circle"></i> 1. 다락방 모임 디모데 체크</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>안내 사항</h3>
+                    <ul>
+                        <li><i class="fas fa-calendar-check"></i> <strong>오늘(목) 저녁까지</strong> 다락방 모임을 디모데에 체크해 주세요.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="new-believer">
+            <h2><i class="fas fa-user-plus"></i> 2. 태신자 작정</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>기간 및 제출</h3>
+                    <p><strong>이번 주일(9/28)까지</strong> 태신자 작정 기간입니다.</p>
+                    <ul>
+                        <li><i class="fas fa-hand-point-right"></i> 다락 대심방 불참 순원들은 개별 작정하여 태신자 카드를 교구 목사에게 제출해 주세요.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="party-plan">
+            <h2><i class="fas fa-clipboard-list"></i> 3. 행복파티 계획서 제출</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>제출 방법</h3>
+                    <ul>
+                        <li><i class="fas fa-file-upload"></i> 행축ON 홈페이지에 '다락방 행복파티 계획서'를 제출해 주세요.</li>
+                        <li><i class="fas fa-lightbulb"></i> 샘플 계획서를 참고하여 작성하시면 됩니다.</li>
+                        <li><i class="fas fa-magic"></i> 말 그대로 '계획'이니 멋지게 만들어주세요~!!</li>
+                        <li><i class="fas fa-link"></i> <a href="https://www.hansungchurch.com/newlife/02.asp" target="_blank">계획서 제출 바로가기</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="party-execution">
+            <h2><i class="fas fa-party-horn"></i> 4. 다락방 행복 파티 시행</h2>
+            <div class="card-grid card-grid-wide-cols">
+                <div class="card">
+                    <h3>실행 가이드</h3>
+                    <ul>
+                        <li><i class="fas fa-play"></i> 다락방 대심방을 마친 다락은 행복 파티를 시행하시면 됩니다.</li>
+                        <li><i class="fas fa-gift"></i> 지역장님께 말씀드려 방문자 선물을 미리 수령하세요.</li>
+                        <li><i class="fas fa-camera"></i> 행복파티 후 인증사진을 잘 남겨 주세요. (아래 기준 참고)</li>
+                        <li><i class="fas fa-video"></i> 복음 영상은 아래 링크를 사용하시면 됩니다:
+                            <ul style="margin-top:10px; padding-left: 20px;">
+                                <li><i class="fab fa-youtube"></i> <a href="https://youtu.be/hch2iS64h7g?si=r8-lNgO-TeSD6DFo" target="_blank">담임목사님 복음 메시지</a></li>
+                                <li><i class="fab fa-youtube"></i> <a href="https://youtu.be/19uJ2XhPKU4?si=EaOwRp_OhhXR2gDt" target="_blank">사영리 샌드아트</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>인증사진 기준</h3>
+                    <img src="https://i.imgur.com/OIvk7Ba.png" alt="행복파티 기준 안내">
+                    <img src="https://i.imgur.com/kYRkP7y.jpeg" alt="행복파티 인정 기준 예시">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar nav ul li a');
+            const sections = document.querySelectorAll('main section');
+
+            // Set active link on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50% 0px', // Trigger when section is in the middle of the viewport
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const id = entry.target.id;
+                    const correspondingLink = document.querySelector(`.sidebar nav ul li a[href="#${id}"]`);
+                    if (entry.isIntersecting) {
+                        sidebarLinks.forEach(link => link.classList.remove('active'));
+                        if (correspondingLink) {
+                           correspondingLink.classList.add('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                if (section) { // Null-Safe DOM Access
+                    observer.observe(section);
+                }
+            });
+
+            // Smooth scroll for sidebar links
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId) {
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) { // Null-Safe DOM Access
+                            const offsetTop = targetSection.offsetTop;
+                            window.scrollTo({
+                                top: offsetTop - 20, // Adjust for some spacing from the top
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
